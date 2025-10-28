@@ -13,6 +13,11 @@ module.exports = {
         darkAccent: "#AB8BFF",
         accentText: "#A8B5DB",
         secondaryText: "#D6C7FF",
+        light: {
+          100: '#cac5c5',
+          200: '#9d9999',
+          300: '#7e7b7b',
+        }
       },
     },
   },
