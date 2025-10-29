@@ -1,6 +1,7 @@
 import { icons } from "@/constants/icons";
 import { fetchMoviesDetails } from "@/services/api";
 import useFetch from "@/services/useFetch";
+import * as Linking from "expo-linking";
 import { router, useLocalSearchParams } from "expo-router";
 import React from "react";
 import {
@@ -28,7 +29,11 @@ const MovieInfo = ({ label, value }: MovieInfoProps) => (
 
 const MovieDetails = () => {
   const { id } = useLocalSearchParams();
-  const { data: movie, loading, error } = useFetch(() => fetchMoviesDetails(id as string));
+  const {
+    data: movie,
+    loading,
+    error,
+  } = useFetch(() => fetchMoviesDetails(id as string));
 
   if (loading) {
     return (
@@ -49,14 +54,28 @@ const MovieDetails = () => {
   return (
     <View className="bg-primary flex-1">
       <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
-        <View>
+        <View className="relative">
           <Image
             source={{
               uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
             }}
             style={{ width: "100%", height: 500 }}
-            resizeMode="stretch"
+            resizeMode="cover"
+            className="rounded-b-3xl"
           />
+
+          <TouchableOpacity
+            onPress={() =>
+              Linking.openURL(
+                `https://www.themoviedb.org/movie/${movie.id}-${movie.title
+                  .toLowerCase()
+                  .replace(/\s+/g, "-")}/watch`
+              )
+            }
+            className="absolute bottom-0 right-5 bg-accentText rounded-full p-4 shadow-lg shadow-black/40"
+          >
+            <Image source={icons.play} className="size-8" />
+          </TouchableOpacity>
         </View>
 
         <View className="flex-col items-start justify-center mt-5 px-5">
@@ -103,8 +122,15 @@ const MovieDetails = () => {
         />
       </ScrollView>
 
-      <TouchableOpacity className="absolute bottom-5 left-0 right-0 mx-5 bg-accentText rounded-lg py-3.5 flex flex-row items-center justify-center z-50" onPress={router.back}>
-        <Image source={icons.arrow} className="size-5 mr-1 mt-0.5 rotate-180" tintColor="#fff"/>
+      <TouchableOpacity
+        className="absolute bottom-5 left-0 right-0 mx-5 bg-accentText rounded-lg py-3.5 flex flex-row items-center justify-center z-50"
+        onPress={router.back}
+      >
+        <Image
+          source={icons.arrow}
+          className="size-5 mr-1 mt-0.5 rotate-180"
+          tintColor="#fff"
+        />
         <Text className="text-white font-semibold text-base">Go back</Text>
       </TouchableOpacity>
     </View>
