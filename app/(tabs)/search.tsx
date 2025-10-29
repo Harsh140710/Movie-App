@@ -8,7 +8,6 @@ import useFetch from "@/services/useFetch";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
 
-
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -21,21 +20,22 @@ const Search = () => {
   } = useFetch(() => fetchMovies({ query: searchQuery }), false);
 
   useEffect(() => {
-    const timeOutId = setTimeout( async () => {
+    const timeOutId = setTimeout(async () => {
       if (searchQuery.trim()) {
         await loadMovies();
-
-        if(movies?.length > 0 && movies?.[0]){
-          await updateSearchCount(searchQuery, movies[0]);
-        }
-
       } else {
         reset();
       }
     }, 1000);
 
-    return () => clearTimeout(timeOutId)
+    return () => clearTimeout(timeOutId);
   }, [searchQuery]);
+
+  useEffect(() => {
+    if (movies?.length > 0 && movies?.[0]) {
+      updateSearchCount(searchQuery, movies[0]);
+    }
+  }, [movies]);
 
   return (
     <View className="flex-1 bg-primary">
@@ -67,7 +67,7 @@ const Search = () => {
 
             <View className="my-5">
               <SearchBar
-                placeholder="Search movies..."
+                placeholder="Search through 300+ movies online"
                 value={searchQuery}
                 onChangeText={(text: string) => setSearchQuery(text)}
               />
@@ -99,7 +99,7 @@ const Search = () => {
           !loading && !error ? (
             <View className="mt-10 px-5">
               <Text className="text-center text-gray-500">
-                {searchQuery.trim() ? 'No movies found' : 'Search for a Movie'}
+                {searchQuery.trim() ? "No movies found" : "Search for a Movie"}
               </Text>
             </View>
           ) : null
