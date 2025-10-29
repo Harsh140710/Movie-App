@@ -1,0 +1,26 @@
+{
+  "cli": {
+    "version": ">= 16.25.1",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_APPWRITE_ENDPOINT": "https://cloud.appwrite.io/v1",
+        "EXPO_PUBLIC_APPWRITE_TABLE_NAME": "matrics",
+        "EXPO_PUBLIC_APPWRITE_DATABASE_ID": "6900cda100299279d97a"
+      }
+    },
+    "production": {
+      "autoIncrement": true
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
