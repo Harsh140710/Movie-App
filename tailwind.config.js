@@ -11,7 +11,7 @@ module.exports = {
         searchBar: "#0F0D23",
         text: "#9CA4AB",
         darkAccent: "#AB8BFF",
-        accentText: "#A8B5DB",
+        accentText: "#092558eb",
         secondaryText: "#D6C7FF",
         light: {
           100: '#cac5c5',

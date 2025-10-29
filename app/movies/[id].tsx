@@ -1,9 +1,16 @@
 import { icons } from "@/constants/icons";
 import { fetchMoviesDetails } from "@/services/api";
 import useFetch from "@/services/useFetch";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React from "react";
-import { ActivityIndicator, Image, ScrollView, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 interface MovieInfoProps {
   label: string;
@@ -12,8 +19,8 @@ interface MovieInfoProps {
 
 const MovieInfo = ({ label, value }: MovieInfoProps) => (
   <View className="flex-col items-start justify-center mt-5 px-5">
-    <Text className="text-white font-normal text-lg">{label}</Text>
-    <Text className="text-gray-500 font-bold text-xl mt-2">
+    <Text className="text-white font-bold text-xl">{label}</Text>
+    <Text className="text-gray-500 font-semibold text-lg mt-2">
       {value || "N/A"}
     </Text>
   </View>
@@ -21,11 +28,7 @@ const MovieInfo = ({ label, value }: MovieInfoProps) => (
 
 const MovieDetails = () => {
   const { id } = useLocalSearchParams();
-  const {
-    data: movie,
-    loading,
-    error,
-  } = useFetch(() => fetchMoviesDetails(id as string));
+  const { data: movie, loading, error } = useFetch(() => fetchMoviesDetails(id as string));
 
   if (loading) {
     return (
@@ -56,7 +59,7 @@ const MovieDetails = () => {
           />
         </View>
 
-        <View className="flex-col items-start justify-center mt-5 px-5 w-full">
+        <View className="flex-col items-start justify-center mt-5 px-5">
           <Text className="text-white font-bold text-2xl">{movie.title}</Text>
           <View className="flex-row items-center gap-x-1 mt-2">
             <Text className="text-light-200 text-sm">
@@ -65,7 +68,7 @@ const MovieDetails = () => {
             <Text className="text-light-200 text-sm">{movie.runtime}m</Text>
           </View>
 
-          <View className="flex-row items-center py-1 rounded-md gap-x-1 mt-2">
+          <View className="flex-row w-36 items-center bg-dark-100 px-2 py-1 rounded-md gap-x-1 mt-2">
             <Image source={icons.star} className="size-4" />
             <Text className="text-white font-bold text-sm">
               {Math.round(movie?.vote_average ?? 0)}/10
@@ -99,6 +102,11 @@ const MovieDetails = () => {
           }
         />
       </ScrollView>
+
+      <TouchableOpacity className="absolute bottom-5 left-0 right-0 mx-5 bg-accentText rounded-lg py-3.5 flex flex-row items-center justify-center z-50" onPress={router.back}>
+        <Image source={icons.arrow} className="size-5 mr-1 mt-0.5 rotate-180" tintColor="#fff"/>
+        <Text className="text-white font-semibold text-base">Go back</Text>
+      </TouchableOpacity>
     </View>
   );
 };
